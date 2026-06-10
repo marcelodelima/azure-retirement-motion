@@ -1,0 +1,76 @@
+# Pipeline for the Azure Retirement Motion squad
+# Each step file lives under steps/ and is executed in order by the Pipeline Runner.
+# One run = one customer engagement (inherent per-customer output isolation).
+
+squad: azure-retirement-motion
+
+steps:
+  - file: steps/step-01-customer-intake.md
+    type: checkpoint
+    name: "Customer intake"
+
+  - file: steps/step-02-resolve-customer.md
+    agent: reese-retirement
+    execution: subagent
+    model_tier: fast
+    name: "Resolve customer & TPID"
+
+  - file: steps/step-03-confirm-customer.md
+    type: checkpoint
+    name: "Confirm customer / TPID"
+
+  - file: steps/step-04-extract-and-deck.md
+    agent: reese-retirement
+    execution: subagent
+    model_tier: powerful
+    name: "Extract retirements & generate deck"
+
+  - file: steps/step-05-data-review.md
+    type: checkpoint
+    name: "Data review"
+
+  - file: steps/step-06-build-excel.md
+    agent: ethan-excel
+    execution: subagent
+    model_tier: fast
+    name: "Build impacted-resources Excel workbook"
+
+  - file: steps/step-07-execution-plan.md
+    agent: ravi-runbook
+    execution: inline
+    name: "Author consolidated execution / migration plan"
+
+  - file: steps/step-08-customer-deliverables-approval.md
+    type: checkpoint
+    name: "Customer deliverables approval"
+
+  - file: steps/step-09-motion-plan.md
+    agent: morgan-motion
+    execution: inline
+    name: "Motion & opportunity plan (with ACR)"
+
+  - file: steps/step-10-executive-briefing.md
+    agent: bianca-briefing
+    execution: inline
+    name: "Executive briefing"
+
+  - file: steps/step-11-followup-email.md
+    agent: felix-followup
+    execution: inline
+    name: "Customer follow-up email"
+
+  - file: steps/step-12-review.md
+    agent: quinn-quality
+    execution: inline
+    name: "Quality review"
+    on_reject:
+      # Default loop-back target is the customer-deliverables drafting cluster.
+      # Quinn's verdict names the SPECIFIC agent/step to re-run (Ethan 06, Ravi 07,
+      # Morgan 09, Bianca 10, Felix 11). For non-default targets the CSA re-triggers
+      # that step manually — the Pipeline Runner natively supports a single target.
+      loop_back_to: steps/step-07-execution-plan.md
+      max_iterations: 2
+
+  - file: steps/step-13-final-approval.md
+    type: checkpoint
+    name: "Final approval"
