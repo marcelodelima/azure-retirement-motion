@@ -1,0 +1,15 @@
+# Per-run customer artifacts — never commit customer data
+output/
+
+# Runtime state
+state.json
+*.log
+
+# Node
+node_modules/
+_build/node_modules/
+_build/package-lock.json
+
+# OS / editor
+.DS_Store
+Thumbs.db

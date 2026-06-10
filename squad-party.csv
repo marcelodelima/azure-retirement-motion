@@ -1,0 +1,8 @@
+id,name,title,icon,execution,path
+reese-retirement,Reese Retirement,Retirement Data Collector & Deck Orchestrator,📡,subagent,./agents/reese-retirement.agent.md
+ethan-excel,Ethan Excel,Impacted-Resources Workbook Builder,📊,subagent,./agents/ethan-excel.agent.md
+ravi-runbook,Ravi Runbook,Migration Execution Plan Author,🛠️,inline,./agents/ravi-runbook.agent.md
+morgan-motion,Morgan Motion,Opportunity & Motion Planner,🎯,inline,./agents/morgan-motion.agent.md
+bianca-briefing,Bianca Briefing,Executive Briefing Writer,📈,inline,./agents/bianca-briefing.agent.md
+felix-followup,Felix Followup,Customer Follow-up Email Writer,✉️,inline,./agents/felix-followup.agent.md
+quinn-quality,Quinn Quality,Quality Reviewer,🔍,inline,./agents/quinn-quality.agent.md

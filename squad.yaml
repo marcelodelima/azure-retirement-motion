@@ -1,0 +1,58 @@
+code: azure-retirement-motion
+name: Azure Retirement Motion
+icon: 📡
+description: |
+  Runs the CSU "Azure Retirement Motion" end-to-end for a single customer:
+  pulls Azure service/feature retirement and end-of-support data via the cloned
+  Azure Service Retirements skill, orchestrates the existing customer PowerPoint
+  deck, and produces per-retirement Excel exports, a consolidated execution /
+  migration plan, plus internal motion artifacts (opportunity plan with rough
+  ACR estimates, executive briefing, and a customer follow-up email).
+
+language: en
+domain: mixed   # research + analysis + technical-writing
+
+agents_csv: ./squad-party.csv
+
+skills:
+  - web_search
+  - web_fetch
+  - file_read_write
+  - code_execution
+  # Microsoft Learn MCP — migration path enrichment
+  - mcp_microsoftdocs_microsoft_docs_search
+  - mcp_microsoftdocs_microsoft_docs_fetch
+
+# External skill (not an MCP/native skill): the cloned Azure Service Retirements
+# repo. Reese Retirement orchestrates it via its own AGENTS.md pipeline.
+external_skills:
+  - name: azure-service-retirements
+    path: "<path-to-cloned-azure-service-retirements-repo>"
+    entrypoint: "AGENTS.md / agent-retirements/agent.md"
+    requires: ["az login", "node >=18", "npm install"]
+    auth_resource: "api://f748ae1d-5e8a-4aa0-bfb3-67beda3d3676"
+    produces:
+      - "CustomerData/<Customer>/retirements.json"
+      - "CustomerData/<Customer>/RetirementAssessment-<customer>-YYYY-MM-DD.pptx"
+
+data:
+  - pipeline/data/domain-framework.md
+  - pipeline/data/quality-criteria.md
+  - pipeline/data/anti-patterns.md
+  - pipeline/data/output-examples.md
+  - pipeline/data/research-brief.md
+  - pipeline/data/customer-confidentiality-guard.md
+
+pipeline: ./pipeline/pipeline.yaml
+
+output_isolation:
+  pattern: "output/{run_id}/"
+  notes: |
+    One run = one customer engagement. The Pipeline Runner creates a unique
+    run_id (YYYY-MM-DD-HHmmss) and scopes every output under output/{run_id}/,
+    giving inherent per-customer isolation. The customer name / TPID is captured
+    as metadata in output/{run_id}/intake.md and logged in _memory/runs.md.
+
+memory:
+  squad: ./_memory/memories.md
+  runs:  ./_memory/runs.md
