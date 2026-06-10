@@ -1,0 +1,8 @@
+{
+  "name": "ars-build",
+  "private": true,
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "pptxgenjs": "^4.0.1"
+  }
+}

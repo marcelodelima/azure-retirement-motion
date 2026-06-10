@@ -1,0 +1,37 @@
+squad_code: "azure-retirement-motion"
+purpose: >
+  Run the CSU "Azure Retirement Motion": pull customer Azure service/feature
+  retirement and end-of-support data via the cloned Azure Service Retirements
+  skill, orchestrate the existing customer PowerPoint deck end-to-end, and add
+  per-retirement Excel exports, a consolidated per-customer execution/migration
+  plan, plus internal motion artifacts (opportunity/ACR plan, executive
+  briefing, follow-up email).
+domain: "mixed"   # research + analysis + technical-writing
+
+company:
+  name: "CSU Belux Agentic VBD — Cost Optimization"
+  tone: "Adaptive — executive for briefing, consultative for motion plan, professional/technical for runbooks and email"
+  products: "Azure cost optimization & lifecycle assessments, agentic VBD engagements, executive briefings, customer follow-ups"
+
+language: "en"
+
+context:
+  sources: "Azure Service Retirements skill (CXObserve Retirement APIs) cloned locally (path set in squad.yaml), via the CSA's own az login; Microsoft Learn for migration enrichment"
+  output_format: "Customer: existing PowerPoint deck (unchanged) + Excel workbook (1 sheet per retirement) + consolidated execution/migration plan (1 section per retirement). Internal: motion/opportunity plan with rough ACR estimates, executive briefing, follow-up email"
+  frequency: "On demand, per customer engagement (one run = one customer)"
+  audience: "Internal CSU (CSA, account team) + customer (technical + executive)"
+
+tools_needed:
+  - "azure-service-retirements (external skill, cloned locally; path set in squad.yaml)"
+  - "web_search"
+  - "web_fetch"
+  - "code_execution"
+  - "file_read_write"
+  - "mcp_microsoftdocs_microsoft_docs_search"
+  - "mcp_microsoftdocs_microsoft_docs_fetch"
+
+investigation:
+  enabled: false
+  profiles: []
+
+target_formats: []

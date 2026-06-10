@@ -1,0 +1,129 @@
+# Design output — Azure Retirement Motion squad
+# Input: discovery.yaml (no investigation)
+
+squad:
+  code: "azure-retirement-motion"
+  name: "Azure Retirement Motion"
+  description: >
+    Pulls customer Azure retirement / end-of-support data via the Azure Service
+    Retirements skill, orchestrates the customer PowerPoint deck, and produces
+    per-retirement Excel exports, a consolidated execution/migration plan, and
+    internal motion artifacts (opportunity plan with ACR estimates, executive
+    briefing, follow-up email).
+
+external_skill:
+  name: "azure-service-retirements"
+  path: "<path-to-cloned-azure-service-retirements-repo>"
+  invocation: "Run via the cloned repo's AGENTS.md / agent-retirements/agent.md pipeline (version check → az auth → CXObserve APIs → retirements.json → npm run generate)"
+  auth: "CSA's own az login (az account get-access-token --resource api://f748ae1d-5e8a-4aa0-bfb3-67beda3d3676)"
+  produces:
+    - "CustomerData/<Customer>/retirements.json   (enriched retirement data)"
+    - "CustomerData/<Customer>/RetirementAssessment-<customer>-YYYY-MM-DD.pptx  (customer deck, unchanged)"
+
+agents:
+  - id: "reese-retirement"
+    name: "Reese Retirement"
+    title: "Retirement Data Collector & Deck Orchestrator"
+    icon: "📡"
+    execution: "subagent"
+    role_summary: >
+      Runs the cloned Azure Service Retirements skill end-to-end: version check,
+      az auth, TPID resolution, CXObserve API extraction, enrichment into
+      retirements.json, and generation of the existing customer PowerPoint deck.
+    skills:
+      - web_search
+      - web_fetch
+      - code_execution
+      - file_read_write
+      - mcp_microsoftdocs_microsoft_docs_search
+    tasks:
+      - { name: "resolve-customer", file: "tasks/resolve-customer.md", description: "Resolve customer name → TPID via CXObserve API 2" }
+      - { name: "extract-retirements", file: "tasks/extract-retirements.md", description: "Pull APIs 1/2/3, enrich, write retirements.json" }
+      - { name: "generate-deck", file: "tasks/generate-deck.md", description: "Run npm run generate to produce the customer PPTX" }
+
+  - id: "ethan-excel"
+    name: "Ethan Excel"
+    title: "Impacted-Resources Workbook Builder"
+    icon: "📊"
+    execution: "subagent"
+    role_summary: >
+      Reads retirements.json flattened resource data and builds a single .xlsx
+      with one sheet per retirement (Resource, Subscription, Resource Group,
+      Location, Workload), matching the customer's expected format.
+    skills:
+      - code_execution
+      - file_read_write
+    tasks: []
+
+  - id: "ravi-runbook"
+    name: "Ravi Runbook"
+    title: "Migration Execution Plan Author"
+    icon: "🛠️"
+    execution: "inline"
+    role_summary: >
+      Produces a consolidated customer-facing execution/migration plan with one
+      section per retirement: scope, prerequisites, ordered migration steps,
+      validation, rollback, downtime, and effort estimate.
+    skills:
+      - web_fetch
+      - mcp_microsoftdocs_microsoft_docs_search
+      - mcp_microsoftdocs_microsoft_docs_fetch
+    tasks: []
+
+  - id: "morgan-motion"
+    name: "Morgan Motion"
+    title: "Opportunity & Motion Planner"
+    icon: "🎯"
+    execution: "inline"
+    role_summary: >
+      Maps retirements to MSX JOB2 opportunities/milestones, CSA next actions,
+      and the ACR/UCR angle. Estimates rough ACR per opportunity/milestone with
+      stated assumptions.
+    skills:
+      - web_search
+      - file_read_write
+    tasks: []
+
+  - id: "bianca-briefing"
+    name: "Bianca Briefing"
+    title: "Executive Briefing Writer"
+    icon: "📈"
+    execution: "inline"
+    role_summary: >
+      Writes the internal executive briefing — revenue-at-risk, ROI, JOB2
+      framing — rolling up Morgan's ACR estimates for C-suite/account team.
+    skills:
+      - file_read_write
+    tasks: []
+
+  - id: "felix-followup"
+    name: "Felix Followup"
+    title: "Customer Follow-up Email Writer"
+    icon: "✉️"
+    execution: "inline"
+    role_summary: >
+      Drafts the proactive customer follow-up email summarizing the key
+      retirements and proposed next steps in a professional consultative tone.
+    skills:
+      - file_read_write
+    tasks: []
+
+  - id: "quinn-quality"
+    name: "Quinn Quality"
+    title: "Quality Reviewer"
+    icon: "🔍"
+    execution: "inline"
+    role_summary: >
+      Reviews every artifact for factual accuracy against retirements.json,
+      evidence, tone fit, stated ACR assumptions, and absence of cross-customer
+      PII leakage. Issues a pass/fail verdict with loop-back routing.
+    skills:
+      - file_read_write
+    tasks: []
+
+pipeline_pattern: "non-content (data → analysis → technical writing → review)"
+
+investigation:
+  enriched: false
+
+template_selection: skipped
