@@ -11,11 +11,11 @@ function latestRunDir() {
   return dirs[0];
 }
 const RUN = process.env.RUN_DIR || latestRunDir();
-const DATA = path.join(RUN, 'retirement-data', 'retirements.json');
+const DATA = process.env.DATA_FILE || path.join(RUN, 'retirement-data', 'retirements.json');
 const CUSTOMER = process.env.CUSTOMER_NAME || 'Customer';
 const FILE_CUST = process.env.FILE_CUST || 'Customer';
 const DATE = process.env.REPORT_DATE || new Date().toISOString().slice(0, 10);
-const OUT = path.join(RUN, 'customer', `ExecutionPlan-${FILE_CUST}-${DATE}.md`);
+const OUT = process.env.EXECPLAN_OUTPUT || path.join(RUN, 'customer', `ExecutionPlan-${FILE_CUST}-${DATE}.md`);
 
 const URGENCY_RANK = { Overdue: 0, Critical: 1, Upcoming: 2, Future: 3 };
 const IMPACT_RANK = { High: 0, Medium: 1, Low: 2 };

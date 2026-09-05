@@ -24,7 +24,10 @@ This step executes Reese's `resolve-customer` task. See `agents/reese-retirement
 ### Process
 1. **Version check** — compare local `VERSION` against `git show origin/main:VERSION` in the cloned retirements-agent repo. If behind, stop and instruct the CSA to `git pull` before continuing.
 2. **Auth** — confirm `az login` is active; acquire token for `api://f748ae1d-5e8a-4aa0-bfb3-67beda3d3676`.
-3. **Resolve** — if a TPID was provided in intake, validate it via API 2 and skip search. Otherwise call API 2 with `SearchText` = customer name and build a candidate list.
+3. **Resolve** — if a TPID was provided directly or through a portfolio handoff,
+   validate it via API 2 and skip search. Never trust the handoff as current
+   customer telemetry. Otherwise call API 2 with `SearchText` = customer name
+   and build a candidate list.
 4. **Write** the candidate table to the output file.
 
 ### Decision Criteria

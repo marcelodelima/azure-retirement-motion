@@ -19,6 +19,10 @@ skills:
   - web_fetch
   - file_read_write
   - code_execution
+  - msx-dataverse
+  - microsoft-graph-mail
+  - belux-mal-coverage
+  - retirement-intelligence-model
   # Microsoft Learn MCP — migration path enrichment
   - mcp_microsoftdocs_microsoft_docs_search
   - mcp_microsoftdocs_microsoft_docs_fetch
@@ -26,8 +30,17 @@ skills:
 # External skill (not an MCP/native skill): the cloned Azure Service Retirements
 # repo. Reese Retirement orchestrates it via its own AGENTS.md pipeline.
 external_skills:
+  - name: belux-fy27-mal
+    path: "https://microsofteur.sharepoint.com/:x:/r/teams/microsoftbelux/_layouts/15/Doc.aspx?sourcedoc=%7B80308f7c-aa2d-4cb0-9fcf-e3f523ca6c9a%7D&action=default"
+    entrypoint: "BELUX_FY27_MAL.xlsx / Account Coverage Matrix"
+    requires: ["Microsoft 365 access"]
+    source_document_id: "80308f7c-aa2d-4cb0-9fcf-e3f523ca6c9a"
+    fiscal_year: "FY27"
+    primary_access: "WorkIQ grounded to exact workbook URL"
+    cache_artifact: "output/{run_id}/internal/MALCoverage.json"
+    purpose: "Resolve Azure Specialist, CSAM, and AE once by exact TPID"
   - name: azure-service-retirements
-    path: "<path-to-cloned-azure-service-retirements-repo>"
+    path: "C:/Users/lievenv/OneDrive - Microsoft/GitHub/retirements-agent"
     entrypoint: "AGENTS.md / agent-retirements/agent.md"
     requires: ["az login", "node >=18", "npm install"]
     auth_resource: "api://f748ae1d-5e8a-4aa0-bfb3-67beda3d3676"
@@ -41,9 +54,20 @@ data:
   - pipeline/data/anti-patterns.md
   - pipeline/data/output-examples.md
   - pipeline/data/research-brief.md
+  - pipeline/data/retirement-sources.md
   - pipeline/data/customer-confidentiality-guard.md
 
 pipeline: ./pipeline/pipeline.yaml
+
+retirement_motion_vteam:
+  - name: Manoj Nair
+    alias: Manoj.Nair
+    email: Manoj.Nair@microsoft.com
+    directory_id: 8a8f6763-b527-4dd3-aed0-ff5499edf497
+  - name: Marcelo Lima
+    alias: marcelolima
+    email: marcelolima@microsoft.com
+    directory_id: 785b9b8a-8688-40a3-86f6-a4363429f990
 
 output_isolation:
   pattern: "output/{run_id}/"

@@ -59,18 +59,46 @@ steps:
     execution: inline
     name: "Customer follow-up email"
 
-  - file: steps/step-12-review.md
+  - file: steps/step-12-msx-proposal.md
+    agent: moxie-msx
+    execution: inline
+    name: "Build read-only MSX creation proposal"
+
+  - file: steps/step-13-review.md
     agent: quinn-quality
     execution: inline
     name: "Quality review"
     on_reject:
       # Default loop-back target is the customer-deliverables drafting cluster.
       # Quinn's verdict names the SPECIFIC agent/step to re-run (Ethan 06, Ravi 07,
-      # Morgan 09, Bianca 10, Felix 11). For non-default targets the CSA re-triggers
+      # Morgan 09, Bianca 10, Felix 11, Moxie 12). For non-default targets the CSA re-triggers
       # that step manually — the Pipeline Runner natively supports a single target.
       loop_back_to: steps/step-07-execution-plan.md
       max_iterations: 2
 
-  - file: steps/step-13-final-approval.md
+  - file: steps/step-14-final-approval.md
     type: checkpoint
-    name: "Final approval"
+    name: "Final deliverables approval"
+
+  - file: steps/step-15-msx-approval.md
+    type: checkpoint
+    name: "MSX creation approval"
+
+  - file: steps/step-16-msx-commit.md
+    agent: moxie-msx
+    execution: inline
+    name: "Commit approved MSX records"
+
+  - file: steps/step-17-mail-proposal.md
+    agent: maurice-mailing
+    execution: inline
+    name: "Build read-only account-team mail proposal"
+
+  - file: steps/step-18-mail-approval.md
+    type: checkpoint
+    name: "Account-team mail send approval"
+
+  - file: steps/step-19-mail-send.md
+    agent: maurice-mailing
+    execution: inline
+    name: "Send approved account-team mail"

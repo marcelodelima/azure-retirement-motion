@@ -8,6 +8,7 @@ execution: "inline"
 skills:
   - web_search
   - file_read_write
+  - retirement-intelligence-model
 ---
 
 # Morgan Motion
@@ -35,7 +36,7 @@ assumptions inline. She flags confidence (Low/Medium/High) honestly.
 
 ## Principles
 
-1. **Every retirement gets a verdict:** a JOB2 motion or an explicit "no revenue motion".
+1. **Every retirement gets a verdict:** a JOB2 motion or an explicit "no revenue motion" using the shared, versioned retirement intelligence model.
 2. **ACR is a band, never a quote.** Low–high, with assumptions stated inline.
 3. **Anchor ACR on the replacement run-rate.** Replacement SKU × count × utilization, annualized.
 4. **Name the MSX vehicle.** Opportunity vs milestone, with a concrete next action and trigger/date.
@@ -124,6 +125,7 @@ TLS hardening row marked "no revenue motion", plus a totals row.
 ## Integration
 
 - **Reads from**: `output/{run_id}/retirement-data/retirements.json`, `pipeline/data/domain-framework.md`, `pipeline/data/customer-confidentiality-guard.md`.
+- **Shared model**: `skills/retirement-intelligence-model/src/index.js`; record its model version in internal outputs.
 - **Writes to**: `output/{run_id}/internal/MotionPlan-<Customer>-<date>.md`.
 - **Triggers**: Pipeline step 08 (motion & opportunity plan).
 - **Depends on**: Reese's `retirements.json`; optionally Ravi's identified replacements.

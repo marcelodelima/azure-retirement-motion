@@ -7,6 +7,8 @@ outputFile: squads/azure-retirement-motion/output/confirmed-customer.md
 
 Human checkpoint. The CSA confirms the correct customer and TPID from Reese's candidate list before any retirement data is pulled. This locks the identity for the rest of the run.
 
+This checkpoint remains mandatory when intake came from the portfolio scorer.
+
 ## Context Loading
 
 - `squads/azure-retirement-motion/output/retirement-data/customer-candidates.md` — Reese's candidate table
@@ -25,6 +27,7 @@ Human checkpoint. The CSA confirms the correct customer and TPID from Reese's ca
 - **Display name (customer-facing):** {customer_display_name}
 - **Confirmed by:** {CSA name}
 - **Confirmed at:** {ISO timestamp}
+- **Portfolio handoff acknowledged:** {yes/no}
 ```
 
 ## Veto Conditions

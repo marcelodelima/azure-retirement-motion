@@ -12,12 +12,12 @@ function latestRunDir() {
   return dirs[0];
 }
 const RUN = process.env.RUN_DIR || latestRunDir();
-const DATA = path.join(RUN, 'retirement-data', 'retirements.json');
+const DATA = process.env.DATA_FILE || path.join(RUN, 'retirement-data', 'retirements.json');
 const CUSTOMER = process.env.CUSTOMER_NAME || 'Customer';
 const FILE_CUST = process.env.FILE_CUST || 'Customer';
 const DATE = process.env.REPORT_DATE || new Date().toISOString().slice(0, 10);
 const TPID = process.env.TPID || '';
-const OUT = path.join(RUN, 'internal', `MotionPlan-${FILE_CUST}-${DATE}.md`);
+const OUT = process.env.MOTIONPLAN_OUTPUT || path.join(RUN, 'internal', `MotionPlan-${FILE_CUST}-${DATE}.md`);
 
 const retirements = JSON.parse(fs.readFileSync(DATA, 'utf-8'));
 
