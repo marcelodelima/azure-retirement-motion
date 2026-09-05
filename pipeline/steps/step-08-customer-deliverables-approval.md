@@ -17,7 +17,7 @@ Human checkpoint. The CSA reviews the three customer-facing deliverables — the
 ## What to review
 
 1. **Deck** — opens and reflects the data.
-2. **Excel** — one sheet per retirement; row counts reconcile; correct columns.
+2. **Excel** — Read Me, Summary, and one numbered, filterable resource sheet per retirement; official names, row counts, columns, and hyperlinks reconcile.
 3. **Execution plan** — one section per retirement; steps are concrete and correct.
 
 ## Questions to ask

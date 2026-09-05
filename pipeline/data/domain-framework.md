@@ -28,16 +28,17 @@ The squad orchestrates it; it does NOT re-implement its API logic.
 - **API 1** `serviceretirementsservicesv2` — per-retirement detail.
   Fields: `ServiceName`, `RetiringFeature`, `RetirementDate`, `Impact`, `Description`, `LearnMoreLink`, `PotentialBenefit`, `ResourceType`, `ImpactedResourcesCount`, `ImpactedSubscriptionsCount`, `ImpactedWorkloadsCount`.
 - **API 3** `serviceRetirementsCustomersFlattened` — per-resource detail.
-  Fields: `ServiceName`, `RetiringFeature`, `RetirementDate`, `Name`, `SubscriptionName`, `ResourceGroup`, `Location`, `EntityName` (workload), `ResourceType`, `ArmResourceId`.
+   Fields: `ServiceName`, `RetiringFeature`, `RetirementDate`, `Name`, `SubscriptionName`, `SubscriptionId`, `ResourceGroup`, `Location`, `EntityName` (workload), `ResourceType`, `ArmResourceId`.
 
 ### Canonical artifact: `retirements.json`
 The skill writes the enriched array to `CustomerData/<Customer>/retirements.json`.
 **This file is the contract** every downstream squad agent reads. Per element:
 `service_name`, `retiring_feature`, `label`, `retirement_date`, `urgency`,
-`impact`, `category`, `description`, `potential_benefit`, `resource_type`,
+`impact`, `category`, `description`, `first_seen_date`, `potential_benefit`, `resource_type`,
 `learn_more_link`, `impacted_resources`, `impacted_subscriptions`,
 `impacted_workloads`, `migration_steps[]`, `exec_comment`, `resources_detail[]`
-(each: `name`, `subscription`, `resource_group`, `location`, `workload`).
+(each: `name`, `subscription`, `subscription_id`, `resource_group`, `location`,
+`workload`, `resource_type`, `resource_id`). Resource detail is never truncated.
 
 ## Urgency Classification (relative to run date)
 - **Overdue** — retirement date has passed.
@@ -52,8 +53,10 @@ Ordering everywhere: Overdue → Critical → Upcoming → Future, then Impact
 
 ### Customer-facing
 1. **PowerPoint deck** — generated unchanged by the skill (`npm run generate`).
-2. **Excel workbook** — single `.xlsx`, ONE sheet per retirement, columns:
-   `Resource | Subscription | Resource Group | Location | Workload`.
+2. **Excel workbook** — single `.xlsx` with `Read Me`, `Summary`, and one
+   numbered, filterable resource sheet per retirement. Summary and resource rows
+   use the official full retirement `label`; official notices and Azure Portal
+   links are clickable only when source URLs or ARM resource IDs are available.
 3. **Execution / migration plan** — single consolidated Markdown document, ONE
    section per retirement: scope, prerequisites, ordered steps, validation,
    rollback, downtime, effort.

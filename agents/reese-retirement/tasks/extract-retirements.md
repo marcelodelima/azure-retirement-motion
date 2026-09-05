@@ -23,10 +23,11 @@ produce `retirements.json` for the confirmed customer.
 3. **API 1 — detail** (`serviceretirementsservicesv2`, `OrderBy: RetirementDate asc`,
    `Top: 100`): one record per retirement with `ServiceName`, `RetiringFeature`,
    `RetirementDate`, `Impact`, `Description`, `LearnMoreLink`, `PotentialBenefit`,
-   `ResourceType`, and impacted counts.
+   `ResourceType`, `FirstSeenDate`, and impacted counts.
 4. **API 3 — flattened** (`serviceRetirementsCustomersFlattened`, `Top: 30000`):
-   per-resource rows with `Name`, `SubscriptionName`, `ResourceGroup`, `Location`,
-   `EntityName` (workload), `ResourceType`, `ArmResourceId`. Group by retirement.
+   per-resource rows with `Name`, `SubscriptionName`, `SubscriptionId`,
+   `ResourceGroup`, `Location`, `EntityName` (workload), `ResourceType`,
+   `ArmResourceId`. Group by retirement and retain every row without truncation.
 5. **Enrichment (Stage 2):** for each retirement classify urgency
    (Overdue/Critical/Upcoming/Future vs the run date), generate `migration_steps`
    and `exec_comment`, attach `resources_detail[]`. Sort by urgency → impact →

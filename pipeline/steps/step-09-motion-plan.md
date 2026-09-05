@@ -21,8 +21,11 @@ Morgan Motion (inline) builds the **internal motion plan** — mapping each reti
 ## Instructions
 
 ### Process
-1. **Load** `retirements.json` and the collection report.
-2. For **each retirement**, decide the motion type: **revenue motion** (modernization → new/expanded consumption) or **hygiene** (config change, no net-new ACR).
+1. **Load** `retirements.json`, the collection report, and the shared
+	`retirement-intelligence-model`; record its model version in the output.
+2. For **each retirement**, use the shared model to decide the motion type:
+	**revenue motion** (modernization → new/expanded consumption) or **hygiene**
+	(config change, no net-new ACR).
 3. For revenue motions, map to an **MSX opportunity / milestone** (name the modern target service and the consumption it drives).
 4. **Estimate ACR as a band** (low–high) per item, with **stated assumptions** (resource count, SKU, region, utilization) and a **confidence** level. Never present fake-precise figures.
 5. **Roll up** a total ACR opportunity band across all revenue motions, and a total **impacted-resource count** across all motions.

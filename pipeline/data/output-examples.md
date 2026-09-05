@@ -7,20 +7,26 @@ template. All figures below are illustrative.
 
 ## Example 1 — Excel workbook layout (Ethan)
 
-Single workbook `RetirementImpact-Contoso-2026-06-10.xlsx`. One sheet per
-retirement. Sheet name = short retirement label (≤31 chars).
+Single workbook `RetirementImpact-Contoso-2026-06-10.xlsx` with sheets in this
+order: `Read Me`, `Summary`, then one numbered resource sheet per retirement.
 
-**Sheet: `PostgreSQL 11 flexible server`**
+**Sheet: `Summary`**
 
-| Resource | Subscription | Resource Group | Location | Workload |
-|----------|--------------|----------------|----------|----------|
-| pg-edrive | Contoso EDRIVE | rg-edrive | westeurope | E-Drive Platform |
-| pg-billing-prod | Contoso PROD-01 | rg-billing | westeurope | Billing Platform |
-| pg-analytics | Contoso DATA | rg-analytics | northeurope | Data Lake |
+| # | Service Name | Retirement | Urgency | Impact | Retirement Date | Impacted Resources | Impacted Subscriptions | Impacted Workloads | Recommendation | Potential Benefit | Resource Type | Learn More |
+|---|--------------|------------|---------|--------|-----------------|--------------------|------------------------|--------------------|----------------|-------------------|---------------|------------|
+| 1 | Azure Database for PostgreSQL | Azure Database for PostgreSQL version 11 is retiring | Critical | High | 2026-08-31 | 3 | 3 | 3 | Upgrade to a supported major version. | Continued support and security updates. | Microsoft.DBforPostgreSQL/flexibleServers | Learn More |
 
-**Sheet: `TLS 1.0/1.1 storage`** → its own resource list, same columns.
+**Sheet: `1. Azure Database for Postgre`**
 
-Rule: rows on a sheet == that retirement's `resources_detail` length.
+| Retirement | Subscription Name | Subscription ID | Resource Group | Resource Name | Resource Type | Location | Resource ID | Azure Portal |
+|------------|-------------------|-----------------|----------------|---------------|---------------|----------|-------------|--------------|
+| Azure Database for PostgreSQL version 11 is retiring | Contoso EDRIVE | 00000000-0000-0000-0000-000000000000 | rg-edrive | pg-edrive | Microsoft.DBforPostgreSQL/flexibleServers | westeurope | /subscriptions/.../pg-edrive | Open in Azure Portal |
+
+`Learn More` links to the row's official retirement notice. `Read Me` explains
+purpose, scope, urgency, filters, official notice links, and confidentiality;
+every used row has wrapped text and a fixed 80-pixel height. Rule: Summary rows
+equal the retirement count and each numbered sheet equals that retirement's
+`resources_detail[]` length.
 
 ---
 
