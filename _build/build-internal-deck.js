@@ -38,8 +38,9 @@ try {
 const FILE_CUST = process.env.FILE_CUST || derivedCust || 'Customer';
 const DATE = process.env.REPORT_DATE || derivedDate || new Date().toISOString().slice(0, 10);
 const CUSTOMER = process.env.CUSTOMER_NAME || FILE_CUST.replace(/-/g, '/');
-const DATA = path.join(RUN_DIR, 'retirement-data', 'retirements.json');
-const OUT = path.join(RUN_DIR, 'internal', `InternalBriefing-${FILE_CUST}-${DATE}.pptx`);
+const DATA = process.env.DATA_FILE || path.join(RUN_DIR, 'retirement-data', 'retirements.json');
+const INTERNAL_DIR = process.env.INTERNAL_DIR || path.join(RUN_DIR, 'internal');
+const OUT = path.join(INTERNAL_DIR, `InternalBriefing-${FILE_CUST}-${DATE}.pptx`);
 const TPID = process.env.TPID || '';
 
 // ─── Palette (matches RetirementAssessment customer deck) ───
@@ -81,7 +82,6 @@ const byUrg = (u) => retirements.filter((r) => r.urgency === u);
 const overdue = byUrg('Overdue'), critical = byUrg('Critical'), upcoming = byUrg('Upcoming'), future = byUrg('Future');
 const resOf = (arr) => arr.reduce((s, r) => s + (r.impacted_resources || 0), 0);
 const totalResources = resOf(retirements);
-const totalSubs = new Set(retirements.flatMap((r) => (r.resources_detail || []).map((d) => d.subscription))).size;
 
 let totalLo = 0, totalHi = 0;
 const revenue = [], hygiene = [];
@@ -126,7 +126,7 @@ t.addText('CSU Belux  •  JOB2 Retirement Motion  •  Internal — not for cus
 const s2 = pptx.addSlide();
 addBackground(s2);
 s2.addText('The Motion at a Glance', { x: 0.5, y: 0.25, w: 12.3, h: 0.6, fontSize: 28, bold: true, color: C.navy, fontFace: 'Segoe UI' });
-const headline = `${retirements.length} Azure retirements across ${totalResources} resources, ${totalSubs} subscriptions — ${eur(totalLo)}–${eur(totalHi)}/yr modernization (ACR) opportunity.`;
+const headline = `${retirements.length} Azure retirements across ${totalResources} resources — ${eur(totalLo)}–${eur(totalHi)}/yr modernization (ACR) opportunity.`;
 s2.addText(headline, { x: 0.5, y: 1.05, w: 12.3, h: 0.5, fontSize: 16, bold: true, color: overdue.length ? C.red : C.accentBlue, fontFace: 'Segoe UI' });
 s2.addText('A proactive lifecycle motion: replace end-of-life services (JOB2), refresh the customer on current Azure, and convert the largest motions into MSX opportunities. Hygiene/security retirements carry no net-new ACR but build trust and reduce risk.', { x: 0.5, y: 1.55, w: 12.3, h: 0.55, fontSize: 11.5, color: C.darkGrey, fontFace: 'Segoe UI', lineSpacingMultiple: 1.25 });
 
@@ -213,7 +213,7 @@ hygTop.forEach(({ r, m, c }, i) => {
 s4.addTable(hRows, { x: 0.5, y: 1.5, w: 12.3, colW: [5.8, 1.3, 5.2], border: { type: 'solid', color: C.lightGrey, pt: 0.5 }, rowH: 0.42, valign: 'middle' });
 const topHyg = hygiene.slice().sort((a, b) => b.c - a.c)[0];
 if (topHyg) {
-  const hSubs = new Set((topHyg.r.resources_detail || []).map((d) => d.subscription)).size;
+  const hSubs = topHyg.r.impacted_subscriptions || 0;
   s4.addText(`Note: ${topHyg.r.service_name} — ${topHyg.r.retiring_feature} (${topHyg.c} resources${hSubs ? `, ${hSubs} subscriptions` : ''}) is the largest hygiene item — flag the cross-subscription engineering effort to the account team.`, { x: 0.5, y: 6.2, w: 12.3, h: 0.6, fontSize: 10, italic: true, color: C.midGrey, fontFace: 'Segoe UI' });
 }
 addFooter(s4, `${CUSTOMER} · Hygiene & Posture`);

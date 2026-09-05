@@ -48,8 +48,8 @@ agents:
     execution: "subagent"
     role_summary: >
       Reads retirements.json flattened resource data and builds a single .xlsx
-      with one sheet per retirement (Resource, Subscription, Resource Group,
-      Location, Workload), matching the customer's expected format.
+      with Read Me, Summary, and one numbered resource sheet per retirement,
+      including source-backed official notice and Azure Portal links.
     skills:
       - code_execution
       - file_read_write
@@ -82,6 +82,7 @@ agents:
     skills:
       - web_search
       - file_read_write
+      - retirement-intelligence-model
     tasks: []
 
   - id: "bianca-briefing"
@@ -106,6 +107,40 @@ agents:
       retirements and proposed next steps in a professional consultative tone.
     skills:
       - file_read_write
+    tasks: []
+
+  - id: "moxie-msx"
+    name: "Moxie MSX"
+    title: "Approval-Gated MSX Opportunity Orchestrator"
+    icon: "🧭"
+    execution: "inline"
+    role_summary: >
+      Resolves exact MSX account, currency, price-list, workload, and duplicate
+      data; builds a write-free proposal from canonical lower ACR estimates;
+      and creates the hash-approved opportunity and milestones with a retry-safe receipt.
+    skills:
+      - file_read_write
+      - code_execution
+      - msx-dataverse
+      - belux-mal-coverage
+    tasks: []
+
+  - id: "maurice-mailing"
+    name: "Maurice Mailing"
+    title: "Approval-Gated Account Team Mail Orchestrator"
+    icon: "📨"
+    execution: "inline"
+    role_summary: >
+      After successful MSX creation, resolves Azure Specialist, CSAM and AE from
+      the latest FY BELUX MAL, prepares the template-based internal account-team
+      mail with the Top Revenue Motions image, and sends only after independent
+      hash-bound approval.
+    skills:
+      - file_read_write
+      - code_execution
+      - msx-dataverse
+      - microsoft-graph-mail
+      - belux-mal-coverage
     tasks: []
 
   - id: "quinn-quality"
